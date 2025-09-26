@@ -5,7 +5,9 @@ import { FaTrash } from "react-icons/fa"
 import "../Component/cart.css";
 
 const Cart = () => {
-  const url = "http://localhost:5000";
+  // const url = "http://localhost:5000";
+    const url = "https://lee-mart-api.onrender.com" 
+
 
   const { cart, decreaseQty, addToCart, removeFromCart, clearCart } = useContext(AppContext);
   const [quantity, setQuantity] = useState(0);
