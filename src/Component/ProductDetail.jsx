@@ -6,7 +6,9 @@ import AppContext from "../Context/AppContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const url = "http://localhost:5000";
+  // const url = "http://localhost:5000";
+    const url = "https://lee-mart-api.onrender.com" 
+
   const IMG_URL = "http://localhost:5000/uploads/";
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(""); // 👈 current main image
