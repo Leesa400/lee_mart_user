@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../Context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { FaTrash } from "react-icons/fa"
-import "../Component/cart.css";
+import "../Component/Cart.css";
 
 const Cart = () => {
   // const url = "http://localhost:5000";
