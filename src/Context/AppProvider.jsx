@@ -130,6 +130,7 @@ const addCategory = async (name) => {
     setToken(api.data.token) 
     setIsAuthenticated(true) 
     localStorage.setItem("token", api.data.token)
+    localStorage.setItem("userId", api.data.user._id)
     // console.log("Token stored:", token)
 
     toast.success(api.data.message, {

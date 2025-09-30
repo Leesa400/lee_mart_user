@@ -6,8 +6,9 @@ const ShowProduct = () => {
   const { product } = useContext(AppContext);
 
   // Base URL for images 
-  const IMG_URL = "http://localhost:5000/uploads/";
-
+  // const IMG_URL = "http://localhost:5000/uploads/";
+  const IMG_URL = "https://lee-mart-api.onrender.com/uploads/";
+console.log("images",IMG_URL)
   return (
     <div className="container my-4">
       <div className="row g-4">
