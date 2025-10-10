@@ -45,9 +45,9 @@ const Nav = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/showproduct">Products</Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link" to="/productform">Add Product</Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <form onSubmit={submitHandler} className="d-flex align-items-center ms-3">
                 <input type="text" value={searchItem} onChange={(e) => setSearchItem(e.target.value)} placeholder="Search here..." className="form-control form-control-sm me-2" />

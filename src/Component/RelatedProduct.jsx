@@ -7,7 +7,7 @@ const RelatedProduct = ({ category, currentProductId }) => {
   // const url = "http://localhost:5000";
     const url = "https://lee-mart-api.onrender.com" 
 
-  // const IMG_URL = "http://localhost:5000/uploads/";
+  const IMG_URL = "http://localhost:5000/uploads/";
 
   useEffect(() => {
     const fetchRelated = async () => {

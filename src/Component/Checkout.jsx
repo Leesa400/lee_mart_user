@@ -16,12 +16,17 @@ const Checkout = () => {
     if (cart?.items) {
       for (let i = 0; i < cart.items.length; i++) {
         qty += cart.items[i].quantity;
-        price += cart.items[i].price * cart.items[i].quantity;
+        // price += cart.items[i].price * cart.items[i].quantity;
+        // price += Number(cart.items[i].price) * cart.items[i].quantity;
+        const totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+
       }
     }
     setPrice(price);
     setQty(qty);
   }, [cart]);
+console.log(cart.items);
 
   const handlePayment = async () => {
     try {
