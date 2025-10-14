@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 const RelatedProduct = ({ category, currentProductId }) => {
   const [related, setRelated] = useState([]);
-  const url = "http://localhost:5000";
-    // const url = "https://lee-mart-api.onrender.com" 
-    const IMG_URL = "http://localhost:5000/uploads/";
-    // const IMG_URL = "https://lee-mart-api.onrender.com/uploads/";
+  // const url = "http://localhost:5000";
+    const url = "https://lee-mart-api.onrender.com" 
+    // const IMG_URL = "http://localhost:5000/uploads/";
+    const IMG_URL = "https://lee-mart-api.onrender.com/uploads/";
 
   useEffect(() => {
     const fetchRelated = async () => {
