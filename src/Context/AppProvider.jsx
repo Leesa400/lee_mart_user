@@ -5,8 +5,8 @@ import { toast, Bounce } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css" 
 
 const AppProvider = (props) => {
-  // const url = "http://localhost:5000" 
-  const url = "https://lee-mart-api.onrender.com" 
+  const url = "http://localhost:5000" 
+  // const url = "https://lee-mart-api.onrender.com" 
 
   const [product, setProduct] = useState([])  
   const [token, setToken] = useState("") 

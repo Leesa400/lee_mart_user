@@ -6,8 +6,8 @@ import AppContext from "../Context/AppContext";
 
 const ProductDetail = () => {
   const { id } = useParams();
-  // const url = "http://localhost:5000";
-    const url = "https://lee-mart-api.onrender.com" 
+  const url = "http://localhost:5000";
+    // const url = "https://lee-mart-api.onrender.com" 
 
   const IMG_URL = "http://localhost:5000/uploads/";
   // const IMG_URL = "https://lee-mart-api.onrender.com/uploads/";

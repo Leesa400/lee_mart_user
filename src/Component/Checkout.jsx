@@ -63,9 +63,10 @@ const handlePayment = async () => {
 
             console.log("Verifying payment with backend:", paymentData);
 
-            const api = await axios.post( `${url}/ecom/payment/verify-payment`, paymentData);
-
+            const api = await axios.post(`${url}/ecom/payment/verify-payment`, paymentData);
+            console.log("payment api", api)
             if (api.data.success) {
+
               console.log("Payment saved in DB:", api.data.orderConfirm);
               clearCart(); // clear cart only after saving
               navigate("/orderconfirmation");
