@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Checkout = () => {
-  const { cart, userAddress, url, clearCart, addToCart, decreaseQty } =
+  const { cart, userAddress = [], url, clearCart, addToCart, decreaseQty } =
     useContext(AppContext);
   const [qty, setQty] = useState(0);
   const [price, setPrice] = useState(0);
@@ -17,76 +17,86 @@ const Checkout = () => {
       for (let i = 0; i < cart.items.length; i++) {
         qty += cart.items[i].quantity;
         // price += cart.items[i].price * cart.items[i].quantity;
-        // price += Number(cart.items[i].price) * cart.items[i].quantity;
-        const totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-
+        price += Number(cart.items[i].price) * cart.items[i].quantity;
       }
     }
     setPrice(price);
     setQty(qty);
   }, [cart]);
-console.log(cart.items);
+console.log(cart?.items);
 
-  const handlePayment = async () => {
-    try {
-      const orderResponse = await axios.post(`${url}/ecom/payment/checkout`, {
-        amount: price,
-      });
+const handlePayment = async () => {
+  try {
+    // Create Razorpay order on backend
+    const orderResponse = await axios.post(`${url}/ecom/payment/checkout`, {
+      amount: price,           // total price in rupees
+      cartItems: cart?.items,  // send cart items
+      userShipping: userAddress[0], // first address
+      userId: localStorage.getItem("userId"),
+    });
 
-      const { orderId, amount: amountInPaise } = orderResponse.data;
+    const { orderId, amountInPaise } = orderResponse.data;
+    console.log("Order created:", orderResponse.data);
 
-      const options = {
-        key: "rzp_test_RIBdY6juKIyFIQ",
-        amount: amountInPaise,
-        currency: "INR",
-        name: "Lee Mart",
-        description: "Lee Mart",
-        order_id: orderId,
+    // Razorpay options
+    const options = {
+      key: "rzp_test_RIBdY6juKIyFIQ",
+      amount: amountInPaise, // paise
+      currency: "INR",
+      order_id: orderId,
+      name: "Lee Mart",
+      description: "Lee Mart Order",
 
-        handler: async function (response) {
-          const paymentData = {
-            orderId: response.razorpay_order_id,
-            paymentId: response.razorpay_payment_id,
-            signature: response.razorpay_signature,
-            amount: amountInPaise,
-            orderItems: cart?.items,
-            userShipping: userAddress[0],
-            userId: localStorage.getItem("userId"),
-          };
+      // Payment completion handler
+      handler: function (response) {
+        (async () => {
+          try {
+            const paymentData = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              amount: price,            // send in rupees
+              orderItems: cart?.items,
+              userShipping: userAddress[0],
+              userId: localStorage.getItem("userId"),
+            };
 
-          const api = await axios.post(
-            `${url}/ecom/payment/verify-payment`,
-            paymentData
-          );
+            console.log("Verifying payment with backend:", paymentData);
 
-          if (api.data.success) {
-            clearCart();
-            navigate("/orderconfirmation");
-          } else {
-            alert("Payment verification failed!");
+            const api = await axios.post( `${url}/ecom/payment/verify-payment`, paymentData);
+
+            if (api.data.success) {
+              console.log("Payment saved in DB:", api.data.orderConfirm);
+              clearCart(); // clear cart only after saving
+              navigate("/orderconfirmation");
+            } else {
+              console.error("Payment verification failed:", api.data);
+              alert("Payment verification failed! Check console.");
+            }
+          } catch (err) {
+            console.error("Error in verifying payment:", err);
+            alert("Payment verification error! Check console.");
           }
-        },
-        prefill: {
-          name: "Lee Mart User",
-          email: "user@example.com",
-          contact: "9999999999",
-        },
-        notes: {
-          address: "Order from Lee Mart",
-        },
-        theme: {
-          color: "#227669ff",
-        },
-      };
+        })();
+      },
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (error) {
-      console.error("Payment initiation failed:", error);
-      alert("Something went wrong during payment. Please try again.");
-    }
-  };
+      prefill: {
+        name: "Lee Mart User",
+        email: "user@example.com",
+        contact: "9999999999",
+      },
+      theme: { color: "#227669ff" },
+    };
+
+    // 4️ Open Razorpay checkout
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (error) {
+    console.error("Payment initiation failed:", error);
+    alert("Payment initiation failed! Check console.");
+  }
+};
+
 
   return (
     <section className="my-5">

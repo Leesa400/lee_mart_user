@@ -10,6 +10,8 @@ const ProductDetail = () => {
     const url = "https://lee-mart-api.onrender.com" 
 
   const IMG_URL = "http://localhost:5000/uploads/";
+  // const IMG_URL = "https://lee-mart-api.onrender.com/uploads/";
+
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState(""); // 👈 current main image
   const { addToCart } = useContext(AppContext);
@@ -114,7 +116,7 @@ const ProductDetail = () => {
                     addToCart(
                       product._id,
                       product.prod_name,
-                      product.prod_price,
+                      Number(product.prod_price),                      
                       1,
                       mainImage
                     )
